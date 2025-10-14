@@ -1,7 +1,17 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { StepCounterService } from './step-counter.service';
 import { CreateStepCounterDto } from './dto/create-step-counter.dto';
 import { UpdateStepCounterDto } from './dto/update-step-counter.dto';
+import { ActiveUser } from 'src/iam/decorators/active-user.decorator';
+import { ActiveUserInterface } from 'src/iam/interfaces/active-user.interface';
 
 @Controller('step-counter')
 export class StepCounterController {
@@ -13,7 +23,8 @@ export class StepCounterController {
   }
 
   @Get()
-  findAll() {
+  findAll(@ActiveUser() user: ActiveUserInterface) {
+    console.log('hello user', user);
     return this.stepCounterService.findAll();
   }
 
@@ -23,7 +34,10 @@ export class StepCounterController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateStepCounterDto: UpdateStepCounterDto) {
+  update(
+    @Param('id') id: string,
+    @Body() updateStepCounterDto: UpdateStepCounterDto,
+  ) {
     return this.stepCounterService.update(+id, updateStepCounterDto);
   }
 
