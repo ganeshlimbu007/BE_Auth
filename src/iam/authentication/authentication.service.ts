@@ -113,6 +113,7 @@ export class AuthenticationService {
         refreshTokenId,
       }),
     ]);
+    await this.refreshTokenIdsStorage.insert(user.id, refreshTokenId);
     return { accessToken, refreshToken: newRefreshToken };
   }
   async refreshToken(refreshToken: { refreshToken: string }) {
@@ -127,13 +128,17 @@ export class AuthenticationService {
 
       const user = await this.userRepository.findOneBy({ id: sub });
 
+      console.log(refreshTokenId, 'Hello refresh  user :', user);
       if (!user) {
+        console.log('User not found');
         throw new UnauthorizedException('Invalid refresh token');
       }
+
       const isValid = await this.refreshTokenIdsStorage.validate(
         user.id,
         refreshTokenId,
       );
+      console.log('Hello is valid :', isValid);
       if (!isValid) {
         throw new UnauthorizedException('Invalid refresh token');
       } else {

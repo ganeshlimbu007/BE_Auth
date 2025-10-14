@@ -27,6 +27,12 @@ export class RefreshTokenIdsStorage
   async validate(userId: number, tokenId: string): Promise<boolean> {
     const storedTokenId = await this.redisClient.get(this.getKey(userId));
     const valid = storedTokenId === tokenId;
+    console.log(
+      'Validating refresh token for userId:',
+      storedTokenId,
+      'tokenId:',
+      tokenId,
+    );
     if (!valid) {
       throw new InvalidatedRefreshTokenError('Invalidated refresh token');
     }
