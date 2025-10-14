@@ -12,6 +12,10 @@ import { CreateStepCounterDto } from './dto/create-step-counter.dto';
 import { UpdateStepCounterDto } from './dto/update-step-counter.dto';
 import { ActiveUser } from 'src/iam/decorators/active-user.decorator';
 import { ActiveUserInterface } from 'src/iam/interfaces/active-user.interface';
+/* import { ROLES } from 'src/iam/authorization/decorators/roles.decorator';
+import { Role } from 'src/users/enums/user-role.enum'; */
+import { PERMISSIONS } from 'src/iam/authorization/decorators/permission.decorator';
+import { StepCounterPermission } from './step-counter.type';
 
 @Controller('step-counter')
 export class StepCounterController {
@@ -22,6 +26,8 @@ export class StepCounterController {
     return this.stepCounterService.create(createStepCounterDto);
   }
 
+  // @ROLES(Role.ADMIN)
+  @PERMISSIONS(StepCounterPermission.CREATE_STEP_COUNTER)
   @Get()
   findAll(@ActiveUser() user: ActiveUserInterface) {
     console.log('hello user', user);
