@@ -14,8 +14,10 @@ import { ActiveUser } from 'src/iam/decorators/active-user.decorator';
 import { ActiveUserInterface } from 'src/iam/interfaces/active-user.interface';
 /* import { ROLES } from 'src/iam/authorization/decorators/roles.decorator';
 import { Role } from 'src/users/enums/user-role.enum'; */
-import { PERMISSIONS } from 'src/iam/authorization/decorators/permission.decorator';
-import { StepCounterPermission } from './step-counter.type';
+/* import { PERMISSIONS } from 'src/iam/authorization/decorators/permission.decorator';
+import { StepCounterPermission } from './step-counter.type'; */
+import { Policies } from 'src/iam/authorization/decorators/policy.decorator';
+import { FrameworkContributorPolicy } from 'src/iam/policies/framework-contributer.policy';
 
 @Controller('step-counter')
 export class StepCounterController {
@@ -27,7 +29,8 @@ export class StepCounterController {
   }
 
   // @ROLES(Role.ADMIN)
-  @PERMISSIONS(StepCounterPermission.CREATE_STEP_COUNTER)
+  // @PERMISSIONS(StepCounterPermission.CREATE_STEP_COUNTER)
+  @Policies(new FrameworkContributorPolicy())
   @Get()
   findAll(@ActiveUser() user: ActiveUserInterface) {
     console.log('hello user', user);
