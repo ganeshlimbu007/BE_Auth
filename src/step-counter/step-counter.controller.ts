@@ -18,7 +18,10 @@ import { Role } from 'src/users/enums/user-role.enum'; */
 import { StepCounterPermission } from './step-counter.type'; */
 import { Policies } from 'src/iam/authorization/decorators/policy.decorator';
 import { FrameworkContributorPolicy } from 'src/iam/policies/framework-contributer.policy';
+import { Auth } from 'src/iam/authentication/decorators/auth.decorator';
+import { AuthType } from 'src/iam/authentication/enums/auth-type.enum';
 
+@Auth(AuthType.ApiKey, AuthType.ApiKey)
 @Controller('step-counter')
 export class StepCounterController {
   constructor(private readonly stepCounterService: StepCounterService) {}
@@ -30,7 +33,7 @@ export class StepCounterController {
 
   // @ROLES(Role.ADMIN)
   // @PERMISSIONS(StepCounterPermission.CREATE_STEP_COUNTER)
-  @Policies(new FrameworkContributorPolicy())
+  // @Policies(new FrameworkContributorPolicy())
   @Get()
   findAll(@ActiveUser() user: ActiveUserInterface) {
     console.log('hello user', user);
